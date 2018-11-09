@@ -15,8 +15,9 @@ const addGaps = (string = "", gaps) => {
 
 const FALLBACK_CARD = { gaps: [4, 8, 12], lengths: [16], code: { size: 3 } };
 export default class CCFieldFormatter {
-  constructor(displayedFields) {
+  constructor(displayedFields, removeNonNumbers = true) {
     this._displayedFields = [...displayedFields, "type"];
+    this.removeNonNumbers = removeNonNumbers
   }
 
   formatValues = (values) => {
@@ -33,7 +34,7 @@ export default class CCFieldFormatter {
   };
 
   _formatNumber = (number, card) => {
-    const numberSanitized = removeNonNumber(number);
+    const numberSanitized = this.removeNonNumbers ? removeNonNumber(number) : number;
     const maxLength = card.lengths[card.lengths.length - 1];
     const lengthSanitized = limitLength(numberSanitized, maxLength);
     const formatted = addGaps(lengthSanitized, card.gaps);

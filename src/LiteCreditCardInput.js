@@ -79,6 +79,7 @@ export default class LiteCreditCardInput extends Component {
     placeholderColor: PropTypes.string,
 
     additionalInputsProps: PropTypes.objectOf(PropTypes.shape(TextInput.propTypes)),
+    requiresNumber: PropTypes.bool
   };
 
   static defaultProps = {
@@ -91,6 +92,7 @@ export default class LiteCreditCardInput extends Component {
     invalidColor: "red",
     placeholderColor: "gray",
     additionalInputsProps: {},
+    requiresNumber: true
   };
 
   componentDidMount = () => this._focus(this.props.focused);
@@ -139,7 +141,7 @@ export default class LiteCreditCardInput extends Component {
   }
 
   render() {
-    const { focused, values: { number }, inputStyle, status: { number: numberStatus } } = this.props;
+    const { focused, values: { number }, inputStyle, status: { number: numberStatus }, requiresNumber } = this.props;
     const showRightPart = focused && focused !== "number";
 
     return (
@@ -148,9 +150,10 @@ export default class LiteCreditCardInput extends Component {
           s.leftPart,
           showRightPart ? s.hidden : s.expanded,
         ]}>
-          <CCInput {...this._inputProps("number")}
-            keyboardType="numeric"
-            containerStyle={s.numberInput} />
+          { requiresNumber &&
+            <CCInput {...this._inputProps("number")}
+              keyboardType="numeric"
+              containerStyle={s.numberInput} /> }
         </View>
         <TouchableOpacity onPress={showRightPart ? this._focusNumber : this._focusExpiry }>
           <Image style={s.icon} source={Icons[this._iconToShow()]} />

@@ -65,6 +65,8 @@ export default class CreditCardInput extends Component {
     allowScroll: PropTypes.bool,
 
     additionalInputsProps: PropTypes.objectOf(PropTypes.shape(TextInput.propTypes)),
+
+    requiresNumber: PropTypes.bool
   };
 
   static defaultProps = {
@@ -92,6 +94,7 @@ export default class CreditCardInput extends Component {
     placeholderColor: "gray",
     allowScroll: false,
     additionalInputsProps: {},
+    requiresNumber: true
   };
 
   componentDidMount = () => this._focus(this.props.focused);
@@ -143,7 +146,7 @@ export default class CreditCardInput extends Component {
     const {
       cardImageFront, cardImageBack, inputContainerStyle,
       values: { number, expiry, cvc, name, type }, focused,
-      allowScroll, requiresName, requiresCVC, requiresPostalCode,
+      allowScroll, requiresName, requiresCVC, requiresPostalCode, requiresNumber,
       cardScale, cardFontFamily, cardBrandIcons,
     } = this.props;
 
@@ -166,9 +169,10 @@ export default class CreditCardInput extends Component {
           scrollEnabled={allowScroll}
           showsHorizontalScrollIndicator={false}
           style={s.form}>
-          <CCInput {...this._inputProps("number")}
-            keyboardType="numeric"
-            containerStyle={[s.inputContainer, inputContainerStyle, { width: CARD_NUMBER_INPUT_WIDTH }]} />
+          { requiresNumber &&
+            <CCInput {...this._inputProps("number")}
+              keyboardType="numeric"
+              containerStyle={[s.inputContainer, inputContainerStyle, { width: CARD_NUMBER_INPUT_WIDTH }]} /> }
           <CCInput {...this._inputProps("expiry")}
             keyboardType="numeric"
             containerStyle={[s.inputContainer, inputContainerStyle, { width: EXPIRY_INPUT_WIDTH }]} />
