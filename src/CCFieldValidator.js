@@ -11,13 +11,14 @@ const toStatus = validation => {
 
 const FALLBACK_CARD = { gaps: [4, 8, 12], lengths: [16], code: { size: 3 } };
 export default class CCFieldValidator {
-  constructor(displayedFields, validatePostalCode) {
+  constructor(displayedFields, validatePostalCode, validateNumber = true) {
     this._displayedFields = displayedFields;
     this._validatePostalCode = validatePostalCode;
+    this.validateNumber = validateNumber;
   }
 
   validateValues = (formValues) => {
-    const numberValidation = valid.number(formValues.number);
+    const numberValidation = this.validateNumber ? valid.number(formValues.number) : { isValid: true };
     const expiryValidation = valid.expirationDate(formValues.expiry);
     const maxCVCLength = (numberValidation.card || FALLBACK_CARD).code.size;
     const cvcValidation = valid.cvv(formValues.cvc, maxCVCLength);
