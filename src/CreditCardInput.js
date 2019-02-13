@@ -66,7 +66,9 @@ export default class CreditCardInput extends Component {
 
     additionalInputsProps: PropTypes.objectOf(PropTypes.shape(TextInput.propTypes)),
 
-    requiresNumber: PropTypes.bool
+    requiresNumber: PropTypes.bool,
+    datePlaceholder: PropTypes.string,
+    cardPlaceholders: PropTypes.object
   };
 
   static defaultProps = {
@@ -94,7 +96,14 @@ export default class CreditCardInput extends Component {
     placeholderColor: "gray",
     allowScroll: false,
     additionalInputsProps: {},
-    requiresNumber: true
+    requiresNumber: true,
+    datePlaceholder: 'MONTH/YEAR',
+    cardPlaceholders: {
+      number: "•••• •••• •••• ••••",
+      name: "FULL NAME",
+      expiry: "••/••",
+      cvc: "•••"
+    }
   };
 
   componentDidMount = () => this._focus(this.props.focused);
@@ -147,7 +156,7 @@ export default class CreditCardInput extends Component {
       cardImageFront, cardImageBack, inputContainerStyle,
       values: { number, expiry, cvc, name, type }, focused,
       allowScroll, requiresName, requiresCVC, requiresPostalCode, requiresNumber,
-      cardScale, cardFontFamily, cardBrandIcons,
+      cardScale, cardFontFamily, cardBrandIcons, datePlaceholder, cardPlaceholders
     } = this.props;
 
     return (
@@ -162,7 +171,10 @@ export default class CreditCardInput extends Component {
           name={requiresName ? name : " "}
           number={number}
           expiry={expiry}
-          cvc={cvc} />
+          cvc={cvc}
+          datePlaceholder={datePlaceholder}
+          placeholder={cardPlaceholders}
+      />
         <ScrollView ref="Form"
           horizontal
           keyboardShouldPersistTaps="always"
